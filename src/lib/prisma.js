@@ -13,8 +13,16 @@ let prisma;
 
 // Only initialize singletons on the server-side
 if (typeof window === "undefined") {
+  const connectionString = process.env.DATABASE_URL || process.env.DIRECT_URL;
+
+  if (!connectionString) {
+    throw new Error(
+      "Missing database connection string. Set DATABASE_URL or DIRECT_URL in your environment."
+    );
+  }
+
   const pool = new pg.Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString,
   });
   const adapter = new PrismaPg(pool);
 
