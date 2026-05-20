@@ -4,35 +4,40 @@ import { studentFormSchema } from "../../../../features/students/schemas/student
 
 export async function GET(request, { params }) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const student = await studentService.getStudentById(id);
     if (!student) {
       return NextResponse.json({ error: "Student not found." }, { status: 404 });
     }
     return NextResponse.json({ data: student }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("GET /api/students/[id] error:", error);
+    const message = error?.message ?? String(error) ?? "Internal Server Error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
 export async function PATCH(request, { params }) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const payload = await request.json();
     const studentPayload = studentFormSchema.parse(payload);
     const updated = await studentService.updateStudent(id, studentPayload);
     return NextResponse.json({ data: updated }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error?.message || "Invalid update payload." }, { status: 400 });
+    console.error("PATCH /api/students/[id] error:", error);
+    return NextResponse.json({ error: error?.message || String(error) || "Invalid update payload." }, { status: 400 });
   }
 }
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const removed = await studentService.deleteStudent(id);
     return NextResponse.json({ data: removed }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("DELETE /api/students/[id] error:", error);
+    const message = error?.message ?? String(error) ?? "Internal Server Error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

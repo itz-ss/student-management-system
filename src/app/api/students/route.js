@@ -7,7 +7,9 @@ export async function GET() {
     const students = await studentService.getAllStudents();
     return NextResponse.json({ data: students }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("GET /api/students error:", error);
+    const message = error?.message ?? String(error) ?? "Internal Server Error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -18,6 +20,7 @@ export async function POST(request) {
     const result = await studentService.createStudent(studentPayload);
     return NextResponse.json({ data: result }, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: error?.message || "Invalid student payload." }, { status: 400 });
+    console.error("POST /api/students error:", error);
+    return NextResponse.json({ error: error?.message || String(error) || "Invalid student payload." }, { status: 400 });
   }
 }
