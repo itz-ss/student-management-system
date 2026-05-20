@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EduAdmin | Student Management System
 
-## Getting Started
+A premium, modular, and scalable student management application built with **Next.js 15**, **Prisma 7**, and **Supabase**.
 
-First, run the development server:
+## 🚀 Key Features
+
+- **Persistent Storage:** Fully integrated with Supabase PostgreSQL.
+- **Industry-Standard Architecture:** Modular service layer decoupled from API routes.
+- **Modern UI:** Responsive dashboard design with sidebar navigation and mobile drawer.
+- **Secure Data Handling:** Zod-validated schemas and proper error boundary management.
+
+## 🛠️ Technology Stack
+
+- **Frontend:** Next.js (App Router), React 19.
+- **Backend:** Next.js API Routes.
+- **Database:** Supabase (PostgreSQL).
+- **ORM:** Prisma 7 with the new configuration pattern.
+- **Icons:** React Icons (Lucide).
+- **Validation:** Zod.
+
+## 📦 Project Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+src/
+├── app/                  # Next.js App Router (Layouts, Pages, APIs)
+├── components/           # Generic UI components
+├── features/
+│   └── students/         # Domain-driven student feature layer
+│       ├── components/   # Feature-specific components (Sidebar, StudentTable, etc.)
+│       ├── hooks/        # Custom React hooks (useStudents)
+│       └── services/     # Client-side API services
+├── lib/                  # Shared libraries (Prisma Client, StudentService)
+└── styles/               # Global CSS and design tokens
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚙️ Setup & Configuration
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 1. Environment Variables
+Create a `.env` file in the root directory:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Supabase Connection (Direct for migrations, Port 5432)
+DATABASE_URL="postgres://postgres:[PASSWORD]@[HOST]:5432/postgres"
+DIRECT_URL="postgres://postgres:[PASSWORD]@[HOST]:5432/postgres"
 
-## Learn More
+# Supabase API
+NEXT_PUBLIC_SUPABASE_URL="https://[PROJECT_REF].supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="[ANON_KEY]"
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Database Migration
+```bash
+npx prisma migrate dev --name init
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Running Locally
+```bash
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📈 Scalability Note
+The project uses **Prisma 7**'s latest configuration patterns and PostgreSQL adapters, making it ready for high-concurrency environments and serverless deployment. The modular `StudentService` allows for easy extension (e.g., adding caching, logging, or additional data features) without touching the core business logic.
