@@ -21,8 +21,19 @@ if (typeof window === "undefined") {
     );
   }
 
+  // Configure pg Pool with sensible defaults for hosted DBs (e.g. Supabase).
+  // Use SSL when required and set timeouts so failures surface quickly during dev.
   const pool = new pg.Pool({
     connectionString,
+    // If your provider requires SSL, this enables it for the pool. In production
+    // you should validate certificates properly and not set rejectUnauthorized: false.
+    ssl: {
+      rejectUnauthorized: false,
+    },
+    // Fail fast when the database is unreachable
+    connectionTimeoutMillis: 5000,
+    // Keep idle clients for a reasonable time
+    idleTimeoutMillis: 30000,
   });
   const adapter = new PrismaPg(pool);
 

@@ -16,7 +16,9 @@ export class StudentService {
       });
     } catch (error) {
       console.error("Failed to fetch students:", error);
-      throw new Error("Could not retrieve students.");
+      // Rethrow the original error so callers (API routes) can inspect
+      // Prisma error codes (e.g. P1001) and map them to appropriate HTTP statuses.
+      throw error;
     }
   }
 
